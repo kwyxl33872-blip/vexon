@@ -1,0 +1,1117 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta name="referrer" content="no-referrer">
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="css.css" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Icons"
+        />
+    </head>
+
+    <body>
+        <div class="page">
+            <div class="sidebar">
+                <div class="brand">
+                    <span class="brand-logo"></span>
+                    <div class="brand-text">Not logged in</div>
+                </div>
+                <nav class="tabs">
+                    <a class="tab active" data-target="home">
+                        <span class="tab-icon"
+                            ><span class="material-icons">home</span></span
+                        >
+                        <span class="tab-label">Home</span>
+                    </a>
+                    <a class="tab" data-target="history">
+                        <span class="tab-icon"
+                            ><span class="material-icons">history</span></span
+                        >
+                        <span class="tab-label">History</span>
+                    </a>
+                    <a class="tab" data-target="action">
+                        <span class="tab-icon"
+                            ><span class="material-icons"
+                                >sports_esports</span
+                            ></span
+                        >
+                        <span class="tab-label">Action</span>
+                    </a>
+                    <a class="tab" data-target="adventure">
+                        <span class="tab-icon"
+                            ><span class="material-icons">explore</span></span
+                        >
+                        <span class="tab-label">Adventure</span>
+                    </a>
+                    <a class="tab" data-target="social">
+                        <span class="tab-icon"
+                            ><span class="material-icons">people</span></span
+                        >
+                        <span class="tab-label">Social</span>
+                    </a>
+                    <a class="tab" data-target="other">
+                        <span class="tab-icon"
+                            ><span class="material-icons">widgets</span></span
+                        >
+                        <span class="tab-label">Other</span>
+                    </a>
+                </nav>
+            </div>
+            <main class="main-panel">
+                <div class="main-header">
+                    <div class="header-label">Vexon</div>
+                    <button class="login-button" type="button">
+                        Login / Sign Up
+                    </button>
+                </div>
+                <section class="content active" id="home">
+                    <h1>Home</h1>
+                    <p>Made by Joonsuh Choi.</p>
+                </section>
+                <section class="content" id="history">
+                    <h1>History</h1>
+                    <div id="history-list"><p>No history yet.</p></div>
+                </section>
+                <section class="content" id="action">
+                    <div class="game-list-view" id="game-list-view">
+                        <h1>Action</h1>
+                        <div class="game-group">
+                            <div class="game-group-label">FNAF</div>
+                            <div class="game-grid">
+                                <button
+                                    class="game-card"
+                                    data-url="https://1games.io/game/fnaf-1/"
+                                    data-title="Five Nights at Freddy's 1"
+                                >
+                                    <img
+                                        src="https://image.api.playstation.com/gs2-sec/appkgo/prod/CUSA18362_00/1/i_cd6a177c374f229f9cd8e1164a78d49f78af97820747d480daf8cdd3e965c248/i/icon0.png"
+                                        alt="FNAF 1"
+                                    />
+                                    <span>Five Nights at Freddy's 1</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://1games.io/game/fnaf-2/"
+                                    data-title="Five Nights at Freddy's 2"
+                                >
+                                    <img
+                                        src="https://m.media-amazon.com/images/I/81HBpJd2h8L.png"
+                                        alt="FNAF 2"
+                                    />
+                                    <span>Five Nights at Freddy's 2</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://1games.io/game/fnaf-3/"
+                                    data-title="Five Nights at Freddy's 3"
+                                >
+                                    <img
+                                        src="https://m.media-amazon.com/images/I/81paxGYlcqL.png"
+                                        alt="FNAF 3"
+                                    />
+                                    <span>Five Nights at Freddy's 3</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://1games.io/game/fnaf-4/"
+                                    data-title="Five Nights at Freddy's 4"
+                                >
+                                    <img
+                                        src="https://static.wikia.nocookie.net/fivenightsatfreddys/images/6/6c/Fnaf_4_desktop_icon.jpg/revision/latest?cb=20150724183458"
+                                        alt="FNAF 4"
+                                    />
+                                    <span>Five Nights at Freddy's 4</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://1games.io/game/fnafsl/"
+                                    data-title="FNAF: Sister Location"
+                                >
+                                    <img
+                                        src="https://static.wikia.nocookie.net/fnaf-sister-location/images/c/c4/SLIcon.jpg/revision/latest/thumbnail/width/360/height/360?cb=20160801195954"
+                                        alt="FNAF Sister Location"
+                                    />
+                                    <span>FNAF: Sister Location</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://kdata1.com/2022/01/customnight.html"
+                                    data-title="FNAF: Ultimate Custom Night"
+                                >
+                                    <img
+                                        src="https://play-lh.googleusercontent.com/pB7dsLLcRgADtFpEPeKc5mSyAn1E1JzrdQ1V7-Y5hizgub3G8e9UJIc5opC9mYXKSBw"
+                                        alt="FNAF UCN"
+                                    />
+                                    <span>FNAF: Ultimate Custom Night</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="game-group">
+                            <div class="game-group-label">Geometry Dash</div>
+                            <div class="game-grid">
+                                <button
+                                    class="game-card"
+                                    data-url="https://html5.gamedistribution.com/9ee26ba4405c456094c70af7dc31a524/?gd_sdk_referrer_url=https://geometryarrow.io/geometry-arrow"
+                                    data-title="Geometry Wave 1"
+                                >
+                                    <img
+                                        src="https://img.gamedistribution.com/9ee26ba4405c456094c70af7dc31a524-512x512.jpg"
+                                        alt="Geometry Wave 1"
+                                    />
+                                    <span>Geometry Wave 1</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://html5.gamedistribution.com/93ec13ded90f4ef8b46b91f7654945cd/?gd_sdk_referrer_url=https://geometryarrow.io/geometry-arrow"
+                                    data-title="Geometry Wave 2"
+                                >
+                                    <img
+                                        src="https://img.gamedistribution.com/93ec13ded90f4ef8b46b91f7654945cd-512x512.jpg"
+                                        alt="Geometry Wave 2"
+                                    />
+                                    <span>Geometry Wave 2</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://1games.io/game/dashmetry/"
+                                    data-title="Geometry Game"
+                                >
+                                    <img
+                                        src="https://imgs.crazygames.com/games/geometry-dash-online/cover_16x9-1732744370399.png?metadata=none&quality=100&width=1200&height=630&fit=crop"
+                                        alt="Geometry Game"
+                                    />
+                                    <span>Geometry Game</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://html5.gamedistribution.com/99423a2819a14804a12f30557091d567/?gd_sdk_referrer_url=https://geometryarrow.io/geometry-vibes-x-arrow"
+                                    data-title="Geometry Vibes"
+                                >
+                                    <img
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLTVZuz3kLW7guYTeqlktlxK9Rvj2KMORMkA&s"
+                                        alt="Geometry Vibes"
+                                    />
+                                    <span>Geometry Vibes</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://geometrydash3d.com/game/GeometryArrow3D/index.html"
+                                    data-title="Geometry Arrow 3D"
+                                >
+                                    <img
+                                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhH6WE7ul5TJv3aDbyQuBv-gJ65rR0xwsocA&s"
+                                        alt="Geometry Arrow 3D"
+                                    />
+                                    <span>Geometry Arrow 3D</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-play-view hidden" id="game-play-view">
+                        <div class="game-play-header">
+                            <button
+                                class="game-back-btn"
+                                id="game-back-btn"
+                                type="button"
+                            >
+                                <span class="material-icons" id="own1"
+                                    >arrow_back</span
+                                >
+                                Back
+                            </button>
+                            <h1 id="game-play-title"></h1>
+                        </div>
+                        <div class="game-iframe-wrap">
+                            <iframe
+                                id="game-iframe"
+                                src=""
+                                allowfullscreen
+                                allow="pointer-lock *; fullscreen *; autoplay *"
+                                tabindex="0"
+                            ></iframe>
+                        </div>
+                        <button
+                            class="game-fullscreen-btn"
+                            id="game-fullscreen-btn"
+                            type="button"
+                        >
+                            <span class="material-icons" id="own1"
+                                >fullscreen</span
+                            >
+                            Fullscreen
+                        </button>
+                    </div>
+                </section>
+                <section class="content" id="adventure">
+                    <div class="game-list-view" id="adv-game-list-view">
+                        <h1>Adventure</h1>
+                        <div class="game-group">
+                            <div class="game-group-label">Minecraft</div>
+                            <div class="game-grid">
+                                <button
+                                    class="game-card"
+                                    data-url="https://eaglercraft.q13x.com/1.8.8/wasm/?retina=true"
+                                    data-title="Minecraft 1.8.8 (WASM)"
+                                >
+                                    <img
+                                        src="https://static.wikia.nocookie.net/minecraft/images/f/fe/GrassNew.png/revision/latest/scale-to-width/360?cb=20190903234415"
+                                        alt="Minecraft 1.8.8 WASM"
+                                    />
+                                    <span>Minecraft 1.8.8 (WASM)</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://eaglercraft.q13x.com/1.8.8/js/?retina=true"
+                                    data-title="Minecraft 1.8.8 (JS)"
+                                >
+                                    <img
+                                        src="https://static.wikia.nocookie.net/minecraft/images/f/fe/GrassNew.png/revision/latest/scale-to-width/360?cb=20190903234415"
+                                        alt="Minecraft 1.8.8 JS"
+                                    />
+                                    <span>Minecraft 1.8.8 (JS)</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://eaglercraft.q13x.com/1.12.2/wasm/?retina=true"
+                                    data-title="Minecraft 1.12.2 (WASM)"
+                                >
+                                    <img
+                                        src="https://static.wikia.nocookie.net/minecraft/images/f/fe/GrassNew.png/revision/latest/scale-to-width/360?cb=20190903234415"
+                                        alt="Minecraft 1.12.2 WASM"
+                                    />
+                                    <span>Minecraft 1.12.2 (WASM)</span>
+                                </button>
+                                <button
+                                    class="game-card"
+                                    data-url="https://eaglercraft.q13x.com/1.12.2/js/?retina=true"
+                                    data-title="Minecraft 1.12.2 (JS)"
+                                >
+                                    <img
+                                        src="https://static.wikia.nocookie.net/minecraft/images/f/fe/GrassNew.png/revision/latest/scale-to-width/360?cb=20190903234415"
+                                        alt="Minecraft 1.12.2 JS"
+                                    />
+                                    <span>Minecraft 1.12.2 (JS)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="game-play-view hidden" id="adv-game-play-view">
+                        <div class="game-play-header">
+                            <button
+                                class="game-back-btn"
+                                id="adv-game-back-btn"
+                                type="button"
+                            >
+                                <span class="material-icons" id="own1"
+                                    >arrow_back</span
+                                >
+                                Back
+                            </button>
+                            <h1 id="adv-game-play-title"></h1>
+                        </div>
+                        <div class="game-iframe-wrap">
+                            <iframe
+                                id="adv-game-iframe"
+                                src=""
+                                allowfullscreen
+                                allow="pointer-lock *; fullscreen *; autoplay *"
+                                tabindex="0"
+                            ></iframe>
+                        </div>
+                        <button
+                            class="game-fullscreen-btn"
+                            id="adv-game-fullscreen-btn"
+                            type="button"
+                        >
+                            <span class="material-icons" id="own1"
+                                >fullscreen</span
+                            >
+                            Fullscreen
+                        </button>
+                    </div>
+                </section>
+                <section class="content" id="social">
+                    <h1>Social</h1>
+                    <div class="social-container">
+                        <div class="social-tabs">
+                            <button class="social-tab active" data-tab="users">
+                                All Users
+                            </button>
+                            <button class="social-tab" data-tab="friends">
+                                Friends
+                            </button>
+                            <button class="social-tab" data-tab="requests">
+                                Friend Requests
+                            </button>
+                            <button
+                                class="social-refresh-btn"
+                                id="social-refresh-btn"
+                                type="button"
+                                aria-label="Refresh"
+                            >
+                                <span class="material-icons">refresh</span>
+                            </button>
+                        </div>
+                        <div class="social-content">
+                            <div class="social-panel active" id="users-panel">
+                                <div class="search-bar">
+                                    <input
+                                        type="text"
+                                        id="user-search"
+                                        placeholder="Search users..."
+                                    />
+                                </div>
+                                <div class="user-list" id="all-users-list">
+                                    <p>You're not logged in</p>
+                                </div>
+                            </div>
+                            <div class="social-panel" id="friends-panel">
+                                <div class="user-list" id="friends-list">
+                                    <p>No friends yet. Add some!</p>
+                                </div>
+                            </div>
+                            <div class="social-panel" id="requests-panel">
+                                <div class="user-list" id="requests-list">
+                                    <p>No pending friend requests.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="content" id="other">
+                    <div class="other-list-view" id="other-list-view">
+                        <h1>Other</h1>
+                        <div class="tool-grid">
+                            <button
+                                class="tool-card"
+                                id="yt-mp3-btn"
+                                data-url="https://cnvmp3.com/v54"
+                                data-title="YouTube to MP3/MP4"
+                            >
+                                <span class="material-icons tool-card-icon"
+                                    >music_note</span
+                                >
+                                <span class="tool-card-name"
+                                    >YouTube to MP3/MP4</span
+                                >
+                            </button>
+                        </div>
+                    </div>
+                    <div class="game-play-view hidden" id="other-play-view">
+                        <div class="game-play-header">
+                            <button
+                                class="game-back-btn"
+                                id="other-back-btn"
+                                type="button"
+                            >
+                                <span class="material-icons" id="own1"
+                                    >arrow_back</span
+                                >
+                                Back
+                            </button>
+                            <h1 id="other-play-title"></h1>
+                        </div>
+                        <div class="game-iframe-wrap">
+                            <iframe
+                                id="other-iframe"
+                                src=""
+                                allowfullscreen
+                                allow="autoplay *"
+                                tabindex="0"
+                            ></iframe>
+                        </div>
+                        <button
+                            class="game-fullscreen-btn"
+                            id="other-fullscreen-btn"
+                            type="button"
+                        >
+                            <span class="material-icons" id="own1"
+                                >fullscreen</span
+                            >
+                            Fullscreen
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <button class="settings-btn" type="button" aria-label="Open settings">
+            <span class="material-icons" id="own">settings</span>
+        </button>
+
+        <div class="settings-overlay" aria-hidden="true">
+            <div
+                class="settings-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="settings-title"
+            >
+                <button
+                    class="settings-close"
+                    type="button"
+                    aria-label="Close settings"
+                >
+                    <span class="material-icons">close</span>
+                </button>
+                <h2 id="settings-title">Settings</h2>
+                <hr />
+                <div class="settings-content">
+                    <div class="settings-info-card">
+                        <h3>You:</h3>
+                        <div class="info-row">
+                            <span>IP address:</span>
+                            <strong class="info-value" data-key="ip"
+                                >Loading...</strong
+                            >
+                        </div>
+                        <div class="info-row">
+                            <span>Device:</span>
+                            <strong class="info-value" data-key="device"
+                                >Loading...</strong
+                            >
+                        </div>
+                        <div class="info-row">
+                            <span>Browser:</span>
+                            <strong class="info-value" data-key="browser"
+                                >Loading...</strong
+                            >
+                        </div>
+                        <div class="info-row">
+                            <span>Screen:</span>
+                            <strong class="info-value" data-key="screen"
+                                >Loading...</strong
+                            >
+                        </div>
+                        <div class="info-row">
+                            <span>Status:</span>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                "
+                            >
+                                <select
+                                    id="status-select"
+                                    class="status-select"
+                                >
+                                    <option value="online">Online</option>
+                                    <option value="idle">Idle</option>
+                                    <option value="offline">Offline</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <span>Account:</span>
+                            <strong class="info-value" data-key="account"
+                                >Not logged in</strong
+                            >
+                        </div>
+                        <div class="info-row">
+                            <span>Email:</span>
+                            <strong class="info-value" data-key="email"
+                                >—</strong
+                            >
+                        </div>
+                        <div class="info-row">
+                            <span>Account Key:</span>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                "
+                            >
+                                <strong
+                                    class="info-value account-key-display"
+                                    data-key="account-key"
+                                    style="
+                                        font-family: monospace;
+                                        word-break: break-all;
+                                    "
+                                    >—</strong
+                                >
+                                <button
+                                    class="eye-toggle"
+                                    type="button"
+                                    data-toggle="account-key"
+                                    aria-label="Toggle account key visibility"
+                                    style="
+                                        background: none;
+                                        border: none;
+                                        cursor: pointer;
+                                        padding: 4px;
+                                        color: inherit;
+                                    "
+                                >
+                                    <span
+                                        class="material-icons"
+                                        style="font-size: 18px"
+                                        >visibility</span
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <span>Password:</span>
+                            <div
+                                style="
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 8px;
+                                "
+                            >
+                                <strong
+                                    class="info-value password-display"
+                                    data-key="password"
+                                    style="
+                                        font-family: monospace;
+                                        word-break: break-all;
+                                    "
+                                    >—</strong
+                                >
+                                <button
+                                    class="eye-toggle"
+                                    type="button"
+                                    data-toggle="password"
+                                    aria-label="Toggle password visibility"
+                                    style="
+                                        background: none;
+                                        border: none;
+                                        cursor: pointer;
+                                        padding: 4px;
+                                        color: inherit;
+                                    "
+                                >
+                                    <span
+                                        class="material-icons"
+                                        style="font-size: 18px"
+                                        >visibility</span
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <span>User ID:</span>
+                            <strong
+                                class="info-value"
+                                data-key="uid"
+                                style="
+                                    font-family: monospace;
+                                    word-break: break-all;
+                                "
+                                >—</strong
+                            >
+                        </div>
+                    </div>
+
+                    <div class="settings-anti">
+                        <h3>anti teacher</h3>
+                        <label class="switch">
+                            <input type="checkbox" id="anti-enabled" />
+                            <span
+                                class="slider-toggle"
+                                aria-hidden="true"
+                            ></span>
+                            <span class="switch-label"
+                                >Enable anti teacher</span
+                            >
+                        </label>
+                        <div class="anti-controls">
+                            <div class="anti-keybind">
+                                <label for="set-keybind"
+                                    >Switch screen keybind</label
+                                >
+                                <div class="keybind-wrap">
+                                    <button
+                                        id="set-keybind"
+                                        class="keybind-btn"
+                                        type="button"
+                                    >
+                                        Set key
+                                    </button>
+                                    <span
+                                        id="keybind-display"
+                                        class="keybind-display"
+                                        >None</span
+                                    >
+                                    <button
+                                        id="clear-keybind"
+                                        class="keybind-clear"
+                                        type="button"
+                                        title="Clear keybind"
+                                    >
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                            <div
+                                class="anti-url-row"
+                                id="anti-url-row"
+                                style="display: none"
+                            >
+                                <label for="anti-url">URL</label>
+                                <input
+                                    id="anti-url"
+                                    class="anti-url-input"
+                                    type="text"
+                                    placeholder="https://example.com"
+                                />
+                            </div>
+
+                            <div
+                                class="anti-action-row"
+                                id="anti-action-row"
+                                style="display: none"
+                            >
+                                <label for="anti-action-select">Action:</label>
+                                <select
+                                    id="anti-action-select"
+                                    class="anti-action-select"
+                                >
+                                    <option value="newtab">Open new tab</option>
+                                    <option value="replace">
+                                        Replace current
+                                    </option>
+                                    <option value="images">Show images</option>
+                                </select>
+                            </div>
+
+                            <div
+                                class="anti-images-row"
+                                id="anti-images-row"
+                                style="display: none"
+                            >
+                                <label>Images</label>
+                                <div
+                                    id="anti-images-container"
+                                    class="anti-images-container"
+                                >
+                                    <!-- image inputs appended here -->
+                                </div>
+                                <div style="margin-top: 8px">
+                                    <button
+                                        id="add-image-btn"
+                                        class="keybind-btn"
+                                        type="button"
+                                    >
+                                        Add image URL
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-history">
+                        <h3>History</h3>
+                        <label class="switch">
+                            <input
+                                type="checkbox"
+                                id="history-enabled"
+                                checked
+                            />
+                            <span
+                                class="slider-toggle"
+                                aria-hidden="true"
+                            ></span>
+                            <span class="switch-label">Enable history</span>
+                        </label>
+                        <div
+                            class="history-sub-controls"
+                            id="history-sub-controls"
+                        >
+                            <label class="switch">
+                                <input
+                                    type="checkbox"
+                                    id="history-account"
+                                    checked
+                                />
+                                <span
+                                    class="slider-toggle"
+                                    aria-hidden="true"
+                                ></span>
+                                <span class="switch-label"
+                                    >Account activity</span
+                                >
+                            </label>
+                            <label class="switch">
+                                <input
+                                    type="checkbox"
+                                    id="history-games"
+                                    checked
+                                />
+                                <span
+                                    class="slider-toggle"
+                                    aria-hidden="true"
+                                ></span>
+                                <span class="switch-label">Games played</span>
+                            </label>
+                            <label class="switch">
+                                <input
+                                    type="checkbox"
+                                    id="history-settings"
+                                    checked
+                                />
+                                <span
+                                    class="slider-toggle"
+                                    aria-hidden="true"
+                                ></span>
+                                <span class="switch-label"
+                                    >Settings changes</span
+                                >
+                            </label>
+                            <label class="switch">
+                                <input
+                                    type="checkbox"
+                                    id="history-messages"
+                                    checked
+                                />
+                                <span
+                                    class="slider-toggle"
+                                    aria-hidden="true"
+                                ></span>
+                                <span class="switch-label">Messages</span>
+                            </label>
+                            <button
+                                id="clear-history-btn"
+                                class="keybind-btn"
+                                type="button"
+                                style="margin-top: 6px"
+                            >
+                                Clear history
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="settings-footer">
+                        <button class="settings-reset" type="button">
+                            Reset settings
+                        </button>
+                        <button class="settings-action" type="button">
+                            Save changes
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-overlay" aria-hidden="true">
+            <div
+                class="auth-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="auth-title"
+            >
+                <button
+                    class="auth-close"
+                    type="button"
+                    aria-label="Close auth dialog"
+                >
+                    <span class="material-icons">close</span>
+                </button>
+                <h2 id="auth-title">Account</h2>
+                <hr />
+                <div class="auth-tabs">
+                    <button
+                        type="button"
+                        class="auth-tab active"
+                        data-mode="login"
+                    >
+                        Login
+                    </button>
+                    <button type="button" class="auth-tab" data-mode="signup">
+                        Sign Up
+                    </button>
+                </div>
+                <div class="auth-content">
+                    <div id="auth-login-panel" class="auth-panel">
+                        <label>Email (Gmail)</label>
+                        <input
+                            id="login-email"
+                            class="auth-input"
+                            type="email"
+                            placeholder="you@gmail.com"
+                        />
+                        <label>Password or account key</label>
+                        <input
+                            id="login-password"
+                            class="auth-input"
+                            type="password"
+                            placeholder="Password or account key"
+                        />
+                        <button
+                            class="auth-submit"
+                            type="button"
+                            id="login-submit"
+                        >
+                            Log in
+                        </button>
+                    </div>
+                    <div id="auth-signup-panel" class="auth-panel hidden">
+                        <label>Email (Gmail)</label>
+                        <input
+                            id="signup-email"
+                            class="auth-input"
+                            type="email"
+                            placeholder="you@gmail.com"
+                        />
+                        <label>Username</label>
+                        <input
+                            id="signup-username"
+                            class="auth-input"
+                            type="text"
+                            placeholder="Choose a username"
+                        />
+                        <label>Password</label>
+                        <input
+                            id="signup-password"
+                            class="auth-input"
+                            type="password"
+                            placeholder="Create a password"
+                        />
+                        <button
+                            class="auth-submit"
+                            type="button"
+                            id="signup-submit"
+                        >
+                            Create account
+                        </button>
+                    </div>
+                    <div id="auth-account-panel" class="auth-panel hidden">
+                        <p>
+                            <strong>Signed in as:</strong>
+                            <span id="account-username"></span>
+                        </p>
+                        <p>
+                            <strong>Email:</strong>
+                            <span id="account-email"></span>
+                        </p>
+                        <p>
+                            <strong>Account key:</strong>
+                            <span id="account-key"></span>
+                        </p>
+                        <button
+                            class="auth-submit"
+                            type="button"
+                            id="reset-password-btn"
+                        >
+                            Reset password
+                        </button>
+                        <button
+                            class="auth-submit"
+                            type="button"
+                            id="delete-account-button"
+                        >
+                            Delete account
+                        </button>
+                        <button
+                            class="auth-submit"
+                            type="button"
+                            id="logout-button"
+                        >
+                            Logout
+                        </button>
+                    </div>
+                    <div
+                        id="password-reset-overlay"
+                        class="password-reset-overlay hidden"
+                    >
+                        <div class="password-reset-card">
+                            <h3>Reset password</h3>
+                            <p>
+                                Enter your current password and a new password
+                                to update your account.
+                            </p>
+                            <label>Current password</label>
+                            <input
+                                id="password-reset-current"
+                                class="auth-input"
+                                type="password"
+                                placeholder="Current password"
+                            />
+                            <label>New password</label>
+                            <input
+                                id="password-reset-new"
+                                class="auth-input"
+                                type="password"
+                                placeholder="New password"
+                            />
+                            <button
+                                class="auth-submit"
+                                type="button"
+                                id="confirm-reset-btn"
+                            >
+                                Save new password
+                            </button>
+                            <button
+                                class="auth-submit secondary"
+                                type="button"
+                                id="cancel-reset-btn"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                    <div id="auth-status" class="auth-status"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="message-overlay" aria-hidden="true">
+            <div
+                class="message-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="message-title"
+            >
+                <button
+                    class="message-close"
+                    type="button"
+                    aria-label="Close message dialog"
+                >
+                    <span class="material-icons">close</span>
+                </button>
+                <button
+                    class="message-back"
+                    type="button"
+                    aria-label="Back to messages list"
+                    style="display: none"
+                >
+                    <span class="material-icons" id="own1">arrow_back</span>
+                </button>
+                <h2 id="message-title">Messages</h2>
+                <div class="message-content">
+                    <div class="message-main" id="message-main">
+                        <div
+                            class="messages-friends-list"
+                            id="messages-friends-list"
+                        >
+                            <p>No friends to message.</p>
+                        </div>
+                    </div>
+                    <div
+                        class="message-chat"
+                        id="message-chat"
+                        style="display: none"
+                    >
+                        <div class="message-header">
+                            <span id="message-recipient-name"></span>
+                            <span
+                                id="message-recipient-status"
+                                class="status-indicator"
+                            ></span>
+                        </div>
+                        <div class="messages-container" id="messages-container">
+                            <p>No messages yet.</p>
+                        </div>
+                        <div
+                            class="message-attachment-preview hidden"
+                            id="message-attachment-preview"
+                        >
+                            <img
+                                id="message-attachment-image"
+                                alt="Selected attachment preview"
+                            />
+                            <div class="message-attachment-info">
+                                <span id="message-attachment-name"></span>
+                                <button
+                                    type="button"
+                                    id="remove-message-attachment"
+                                    class="remove-message-attachment"
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        </div>
+                        <div class="message-input-area">
+                            <button
+                                type="button"
+                                id="attach-image-btn"
+                                class="attach-image-btn"
+                                aria-label="Attach image"
+                            >
+                                <span class="material-icons">image</span>
+                            </button>
+                            <input
+                                type="file"
+                                id="message-image-input"
+                                class="message-image-input"
+                                accept="image/*"
+                            />
+                            <input
+                                type="text"
+                                id="message-input"
+                                class="message-input"
+                                placeholder="Type a message..."
+                            />
+                            <button
+                                type="button"
+                                id="send-message-btn"
+                                class="send-message-btn"
+                            >
+                                Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-overlay" aria-hidden="true">
+            <div
+                class="profile-dialog"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="profile-title"
+            >
+                <button
+                    class="profile-close"
+                    type="button"
+                    aria-label="Close profile dialog"
+                >
+                    <span class="material-icons">close</span>
+                </button>
+                <h2 id="profile-title">User Profile</h2>
+                <hr />
+                <div class="profile-content">
+                    <div class="profile-header">
+                        <div class="profile-avatar" id="profile-avatar"></div>
+                        <div class="profile-info">
+                            <h3 id="profile-username"></h3>
+                            <p id="profile-email"></p>
+                            <span
+                                id="profile-status"
+                                class="status-indicator"
+                            ></span>
+                        </div>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Status:</span>
+                            <span
+                                class="stat-value"
+                                id="profile-status-text"
+                            ></span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Member since:</span>
+                            <span class="stat-value" id="profile-joined"></span>
+                        </div>
+                    </div>
+                    <div class="profile-actions" id="profile-actions">
+                        <!-- Action buttons will be added dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <!-- Firebase SDK (Compat - for regular script tags) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-storage-compat.js"></script>
+    <script src="javascript.js"></script>
+</html>
