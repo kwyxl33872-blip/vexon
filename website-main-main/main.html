@@ -346,14 +346,10 @@
                             <button class="social-tab" data-tab="requests">
                                 Friend Requests
                             </button>
-                            <button
-                                class="social-refresh-btn"
-                                id="social-refresh-btn"
-                                type="button"
-                                aria-label="Refresh"
-                            >
-                                <span class="material-icons">refresh</span>
+                            <button class="social-tab" data-tab="pending">
+                                Pending Requests
                             </button>
+                            <button class="social-tab dev-tab hidden" data-tab="developer">Developer</button>
                         </div>
                         <div class="social-content">
                             <div class="social-panel active" id="users-panel">
@@ -373,9 +369,24 @@
                                     <p>No friends yet. Add some!</p>
                                 </div>
                             </div>
+                            <div class="social-panel" id="developer-panel">
+                                <div class="dev-controls">
+                                    <div class="dev-user-list" id="dev-user-list">
+                                        <p>Loading all users...</p>
+                                    </div>
+                                    <div class="dev-user-detail" id="dev-user-detail">
+                                        <p>Select a user to inspect.</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="social-panel" id="requests-panel">
                                 <div class="user-list" id="requests-list">
                                     <p>No pending friend requests.</p>
+                                </div>
+                            </div>
+                            <div class="social-panel" id="pending-panel">
+                                <div class="user-list" id="pending-requests-list">
+                                    <p>No outgoing requests.</p>
                                 </div>
                             </div>
                         </div>
@@ -514,6 +525,12 @@
                             <span>Email:</span>
                             <strong class="info-value" data-key="email"
                                 >—</strong
+                            >
+                        </div>
+                        <div class="info-row dev-role-row hidden">
+                            <span>Role:</span>
+                            <strong class="info-value" data-key="role"
+                                >User</strong
                             >
                         </div>
                         <div class="info-row">
@@ -783,6 +800,18 @@
                             >
                                 Clear history
                             </button>
+                        </div>
+                    </div>
+
+                    <div class="settings-dev hidden" id="settings-dev">
+                        <h3>Developer tools</h3>
+                        <div class="dev-controls">
+                            <div class="dev-user-list" id="dev-user-list">
+                                <p>Loading all users...</p>
+                            </div>
+                            <div class="dev-user-detail" id="dev-user-detail">
+                                <p>Select a user to inspect.</p>
+                            </div>
                         </div>
                     </div>
 
@@ -1081,6 +1110,7 @@
                         <div class="profile-avatar" id="profile-avatar"></div>
                         <div class="profile-info">
                             <h3 id="profile-username"></h3>
+                            <span id="profile-dev-badge" class="dev-badge hidden">DEV</span>
                             <p id="profile-email"></p>
                             <span
                                 id="profile-status"

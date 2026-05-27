@@ -162,6 +162,22 @@ function fillSettingsInfo() {
           setInfoValue("account", data.username || "Not logged in");
           setInfoValue("email", data.email || "—");
 
+          const isDevUser = isDeveloper(user, data);
+          const roleRow = document.querySelector(".dev-role-row");
+          if (roleRow) {
+            roleRow.classList.toggle("hidden", !isDevUser);
+            if (isDevUser) {
+              setInfoValue("role", "Developer");
+            }
+          }
+
+          if (settingsDevSection) {
+            settingsDevSection.classList.toggle("hidden", !isDevUser);
+            if (isDevUser) {
+              loadDevUsers();
+            }
+          }
+
           const accountKeyDisplay = document.querySelector(
             ".account-key-display",
           );
@@ -192,6 +208,9 @@ function fillSettingsInfo() {
     setInfoValue("uid", "—");
     document.querySelector(".account-key-display").textContent = "—";
     document.querySelector(".password-display").textContent = "—";
+    const roleRow = document.querySelector(".dev-role-row");
+    if (roleRow) roleRow.classList.add("hidden");
+    if (settingsDevSection) settingsDevSection.classList.add("hidden");
   }
 
   fetchPublicIP();
@@ -292,32 +311,12 @@ function updateAuthBadge() {
 
 auth.onAuthStateChanged(function (user) {
   updateAuthBadge();
-  if (user) {
+  try {
     renderAuthPanels();
+  } catch (e) {
+    // renderAuthPanels may not be ready in some contexts
   }
 });
-
-function showAuthStatus(message, type = "error") {
-  if (!authStatus) return;
-  authStatus.textContent = message;
-  authStatus.className = `auth-status ${type}`;
-}
-
-function setAuthMode(mode) {
-  const user = auth.currentUser;
-
-  if (authTabsContainer) authTabsContainer.classList.remove("hidden");
-  authTabs.forEach(function (tab) {
-    tab.classList.toggle("active", tab.dataset.mode === mode);
-  });
-
-  if (authLoginPanel)
-    authLoginPanel.classList.toggle("hidden", mode !== "login");
-  if (authSignupPanel)
-    authSignupPanel.classList.toggle("hidden", mode !== "signup");
-  if (authAccountPanel) authAccountPanel.classList.add("hidden");
-  showAuthStatus("");
-}
 
 function renderAuthPanels() {
   const user = auth.currentUser;
@@ -1284,6 +1283,7 @@ const userSearchInput = document.getElementById("user-search");
 const allUsersList = document.getElementById("all-users-list");
 const friendsList = document.getElementById("friends-list");
 const requestsList = document.getElementById("requests-list");
+const pendingRequestsList = document.getElementById("pending-requests-list");
 const socialRefreshBtn = document.getElementById("social-refresh-btn");
 const messageOverlay = document.querySelector(".message-overlay");
 const messageClose = document.querySelector(".message-close");
@@ -1314,6 +1314,365 @@ const messageChat = document.getElementById("message-chat");
 const messagesFriendsList = document.getElementById("messages-friends-list");
 const messageTitle = document.getElementById("message-title");
 const profileOverlay = document.querySelector(".profile-overlay");
+const profileDevBadge = document.getElementById("profile-dev-badge");
+const settingsDevSection = document.getElementById("settings-dev");
+const devUserList = document.getElementById("dev-user-list");
+const devUserDetail = document.getElementById("dev-user-detail");
+
+const DEVELOPER_EMAIL = "joonsuhchoi1@gmail.com";
+const DEVELOPER_USERNAME = "kwyxl";
+const HIDDEN_MESSAGES_STORAGE_KEY = "hiddenMessages";
+
+function getHiddenMessagesStore() {
+  try {
+    return JSON.parse(localStorage.getItem(HIDDEN_MESSAGES_STORAGE_KEY) || "{}");
+  } catch (error) {
+    console.error("Failed to parse hidden messages storage:", error);
+    return {};
+  }
+}
+
+function saveHiddenMessagesStore(store) {
+  try {
+    localStorage.setItem(HIDDEN_MESSAGES_STORAGE_KEY, JSON.stringify(store));
+  } catch (error) {
+    console.error("Failed to save hidden messages storage:", error);
+  }
+}
+
+function isDeveloper(user, profileData) {
+  if (!user) return false;
+  const email = (user.email || "").toLowerCase();
+  const username = (user.username || user.displayName || "").toLowerCase();
+  const profileUsername = (profileData && profileData.username) ? profileData.username.toLowerCase() : "";
+  return (
+    email === DEVELOPER_EMAIL &&
+    (username === DEVELOPER_USERNAME || profileUsername === DEVELOPER_USERNAME)
+  );
+}
+
+function appendDevBadge(container) {
+  if (!container) return;
+  const badge = document.createElement("span");
+  badge.className = "dev-badge";
+  badge.textContent = "DEV";
+  container.appendChild(badge);
+}
+
+function loadDevUsers() {
+  if (!devUserList) return;
+  devUserList.innerHTML = "<p>Loading all users...</p>";
+
+  db.collection("users")
+    .get()
+    .then(function (snapshot) {
+      const users = [];
+      snapshot.forEach(function (doc) {
+        users.push({ id: doc.id, ...doc.data() });
+      });
+
+      if (users.length === 0) {
+        devUserList.innerHTML = "<p>No users found.</p>";
+        return;
+      }
+
+      renderDevUsers(users);
+    })
+    .catch(function (error) {
+      console.error("Error loading developer user list:", error);
+      devUserList.innerHTML = "<p>Error loading users.</p>";
+    });
+}
+
+function renderDevUsers(users) {
+  if (!devUserList) return;
+  devUserList.innerHTML = "";
+
+  users.forEach(function (user) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "dev-user-button";
+    button.textContent = `${user.username || "Unknown"} (${user.email || "no email"})`;
+    button.addEventListener("click", function () {
+      showDevUserDetails(user);
+    });
+    devUserList.appendChild(button);
+  });
+}
+
+function showDevUserDetails(user) {
+  if (!devUserDetail) return;
+  // Fetch fresh user data for full details
+  db.collection("users")
+    .doc(user.id)
+    .get()
+    .then(function (doc) {
+      if (!doc.exists) {
+        devUserDetail.innerHTML = "<p>User not found.</p>";
+        return;
+      }
+      const data = { id: doc.id, ...doc.data() };
+      devUserDetail.innerHTML = `
+        <div class="dev-user-header">
+          <h4>${data.username || "Unknown"}</h4>
+          <p>${data.email || "No email"}</p>
+          <p><strong>User ID:</strong> ${data.id}</p>
+          <p><strong>Status:</strong> ${data.status || "offline"}</p>
+        </div>
+        <div class="dev-user-stats">
+          <p><strong>Created/Last seen:</strong> ${
+            data.lastSeen ? new Date(data.lastSeen.seconds * 1000).toLocaleString() : "Unknown"
+          }</p>
+          <p><strong>IP:</strong> ${data.lastIp || data.ip || "Unknown"}</p>
+          <p><strong>Access Key:</strong> ${data.accessKey || "—"}</p>
+          <p><strong>Role:</strong> ${
+            (data.email || "").toLowerCase() === DEVELOPER_EMAIL.toLowerCase() ||
+            (data.username || "").toLowerCase() === DEVELOPER_USERNAME.toLowerCase()
+              ? "Developer"
+              : "User"
+          }</p>
+        </div>
+        <div class="dev-controls-footer">
+          <button type="button" class="action-btn warning" id="dev-ban-toggle-btn">
+            Toggle Ban
+          </button>
+          <button type="button" class="action-btn secondary" id="dev-reset-password-btn">
+            Flag Reset Password
+          </button>
+          <button type="button" class="action-btn" id="dev-export-user-btn">
+            Export JSON
+          </button>
+          <button type="button" class="action-btn primary" id="dev-load-messages-btn">
+            Load messages
+          </button>
+        </div>
+        <div class="dev-messages-list" id="dev-messages-list">
+          <p>Messages are not loaded yet.</p>
+        </div>
+      `;
+
+      const banBtn = document.getElementById("dev-ban-toggle-btn");
+      const resetBtn = document.getElementById("dev-reset-password-btn");
+      const exportBtn = document.getElementById("dev-export-user-btn");
+      const loadMessagesBtn = document.getElementById("dev-load-messages-btn");
+
+      if (banBtn) {
+        banBtn.addEventListener("click", function () {
+          const confirmMsg = confirm(
+            `Toggle ban for user ${data.username || data.email || data.id}?`
+          );
+          if (!confirmMsg) return;
+          devToggleBanUser(data.id);
+        });
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener("click", function () {
+          const confirmMsg = confirm(
+            `Set password-reset flag for ${data.username || data.email || data.id}?`
+          );
+          if (!confirmMsg) return;
+          devFlagResetPassword(data.id);
+        });
+      }
+
+      if (exportBtn) {
+        exportBtn.addEventListener("click", function () {
+          devExportUserData(data.id);
+        });
+      }
+
+      if (loadMessagesBtn) {
+        loadMessagesBtn.addEventListener("click", function () {
+          loadDevUserMessages(data.id);
+        });
+      }
+    })
+    .catch(function (err) {
+      console.error("Error loading user details:", err);
+      devUserDetail.innerHTML = "<p>Error loading user details.</p>";
+    });
+}
+
+function devToggleBanUser(userId) {
+  if (!userId) return;
+  const ref = db.collection("users").doc(userId);
+  ref
+    .get()
+    .then(function (doc) {
+      if (!doc.exists) throw new Error("User not found");
+      const current = doc.data() || {};
+      const banned = !!current.banned;
+      return ref.update({ banned: !banned });
+    })
+    .then(function () {
+      alert("Ban toggled successfully.");
+      if (devUserList) loadDevUsers();
+    })
+    .catch(function (err) {
+      console.error("Error toggling ban:", err);
+      alert("Failed to toggle ban. Check console.");
+    });
+}
+
+function devFlagResetPassword(userId) {
+  if (!userId) return;
+  const ref = db.collection("users").doc(userId);
+  ref
+    .update({ forcePasswordReset: true })
+    .then(function () {
+      alert("User flagged for password reset. (Developer flag only)");
+    })
+    .catch(function (err) {
+      console.error("Error flagging reset:", err);
+      alert("Failed to flag password reset.");
+    });
+}
+
+function devExportUserData(userId) {
+  if (!userId) return;
+  db.collection("users")
+    .doc(userId)
+    .get()
+    .then(function (doc) {
+      if (!doc.exists) throw new Error("User not found");
+      const data = { id: doc.id, ...doc.data() };
+      const blob = new Blob([JSON.stringify(data, null, 2)], {
+        type: "application/json",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${data.username || data.id}-export.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    })
+    .catch(function (err) {
+      console.error("Error exporting user:", err);
+      alert("Failed to export user data.");
+    });
+}
+
+function loadDevUserMessages(userId) {
+  const messagesContainer = document.getElementById("dev-messages-list");
+  if (!messagesContainer) return;
+  messagesContainer.innerHTML = "<p>Loading messages...</p>";
+
+  // Try to query conversations where participants array contains the userId
+  db.collection("conversations")
+    .where("participants", "array-contains", userId)
+    .get()
+    .then(function (snapshot) {
+      if (!snapshot.empty) {
+        return Promise.all(
+          snapshot.docs.map(function (doc) {
+            return doc.ref
+              .collection("messages")
+              .orderBy("timestamp", "asc")
+              .get()
+              .then(function (msgsSnap) {
+                return {
+                  conversationId: doc.id,
+                  messages: msgsSnap.docs.map(function (m) {
+                    return { id: m.id, ...m.data() };
+                  }),
+                };
+              });
+          }),
+        );
+      }
+      // Fallback: fetch all conversations and filter by id containing userId
+      return db
+        .collection("conversations")
+        .get()
+        .then(function (allSnap) {
+          const filtered = allSnap.docs.filter(function (d) {
+            return d.id.split("_").includes(userId);
+          });
+          if (filtered.length === 0) return [];
+          return Promise.all(
+            filtered.map(function (doc) {
+              return doc.ref
+                .collection("messages")
+                .orderBy("timestamp", "asc")
+                .get()
+                .then(function (msgsSnap) {
+                  return {
+                    conversationId: doc.id,
+                    messages: msgsSnap.docs.map(function (m) {
+                      return { id: m.id, ...m.data() };
+                    }),
+                  };
+                });
+            }),
+          );
+        });
+    })
+    .then(function (conversations) {
+      if (!conversations || conversations.length === 0) {
+        messagesContainer.innerHTML = "<p>No conversations found.</p>";
+        return;
+      }
+      messagesContainer.innerHTML = "";
+      conversations.forEach(function (conversation) {
+        const section = document.createElement("div");
+        section.className = "dev-conversation";
+        const header = document.createElement("h5");
+        header.textContent = `Conversation ${conversation.conversationId}`;
+        section.appendChild(header);
+        if (conversation.messages.length === 0) {
+          section.innerHTML += "<p>No messages in this conversation.</p>";
+        } else {
+          conversation.messages.forEach(function (message) {
+            const messageItem = document.createElement("div");
+            messageItem.className = "dev-message-item";
+            const sender = document.createElement("div");
+            sender.className = "dev-message-sender";
+            sender.textContent = message.senderName || message.senderId || "Unknown";
+            const text = document.createElement("div");
+            text.className = "dev-message-text";
+            text.textContent = message.text || "[image]";
+            const time = document.createElement("div");
+            time.className = "dev-message-time";
+            if (message.timestamp && message.timestamp.toDate) {
+              time.textContent = new Date(
+                message.timestamp.toDate(),
+              ).toLocaleString();
+            }
+            section.appendChild(sender);
+            section.appendChild(text);
+            section.appendChild(time);
+          });
+        }
+        messagesContainer.appendChild(section);
+      });
+    })
+    .catch(function (error) {
+      console.error("Error loading developer messages:", error);
+      messagesContainer.innerHTML = "<p>Error loading messages.</p>";
+    });
+}
+
+function isMessageHidden(conversationId, messageId) {
+  if (!conversationId || !messageId) return false;
+  const store = getHiddenMessagesStore();
+  return Array.isArray(store[conversationId]) && store[conversationId].includes(messageId);
+}
+
+function hideMessageLocally(conversationId, messageId) {
+  if (!conversationId || !messageId) return;
+  const store = getHiddenMessagesStore();
+  if (!Array.isArray(store[conversationId])) {
+    store[conversationId] = [];
+  }
+  if (!store[conversationId].includes(messageId)) {
+    store[conversationId].push(messageId);
+    saveHiddenMessagesStore(store);
+  }
+}
+
 const profileClose = document.querySelector(".profile-close");
 const profileAvatar = document.getElementById("profile-avatar");
 const profileUsername = document.getElementById("profile-username");
@@ -1481,7 +1840,11 @@ function setupSocialTabs(user) {
       document.getElementById(targetTab + "-panel").classList.add("active");
 
       if (user) {
-        loadSocialData(user);
+        if (targetTab === "developer") {
+          loadDevUsers();
+        } else {
+          loadSocialData(user);
+        }
       }
     });
   });
@@ -1500,6 +1863,7 @@ function loadSocialData(user) {
   loadAllUsers(user);
   loadFriends(user);
   loadFriendRequests(user);
+  loadOutgoingFriendRequests(user);
 }
 
 function loadAllUsers(user) {
@@ -1662,6 +2026,96 @@ function renderFriendRequests(requests) {
   });
 }
 
+function loadOutgoingFriendRequests(user) {
+  if (!pendingRequestsList) return;
+
+  pendingRequestsList.innerHTML = "<p>Loading...</p>";
+
+  db.collection("friendRequests")
+    .where("fromUserId", "==", user.uid)
+    .where("status", "==", "pending")
+    .get()
+    .then(function (snapshot) {
+      const requests = [];
+      snapshot.forEach(function (doc) {
+        requests.push({ id: doc.id, ...doc.data() });
+      });
+      renderOutgoingFriendRequests(requests);
+    })
+    .catch(function (error) {
+      console.error("Error loading outgoing friend requests:", error);
+      pendingRequestsList.innerHTML = "<p>Error loading outgoing requests.</p>";
+    });
+}
+
+function renderOutgoingFriendRequests(requests) {
+  if (!pendingRequestsList) return;
+
+  if (requests.length === 0) {
+    pendingRequestsList.innerHTML = "<p>No outgoing requests.</p>";
+    return;
+  }
+
+  pendingRequestsList.innerHTML = "";
+  requests.forEach(function (request) {
+    const card = document.createElement("div");
+    card.className = "user-card";
+
+    const info = document.createElement("div");
+    info.className = "user-info";
+
+    const avatar = document.createElement("div");
+    avatar.className = "user-avatar";
+    avatar.textContent = (request.toUsername || "U").charAt(0).toUpperCase();
+
+    const details = document.createElement("div");
+    details.className = "user-details";
+
+    const name = document.createElement("div");
+    name.className = "user-name";
+    name.textContent = request.toUsername || "Unknown";
+
+    const email = document.createElement("div");
+    email.className = "user-email";
+    email.textContent = request.toEmail || "";
+
+    details.appendChild(name);
+    details.appendChild(email);
+    info.appendChild(avatar);
+    info.appendChild(details);
+
+    const actions = document.createElement("div");
+    actions.className = "user-actions";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "action-btn danger";
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      cancelFriendRequest(request);
+    });
+
+    actions.appendChild(cancelBtn);
+    card.appendChild(info);
+    card.appendChild(actions);
+    pendingRequestsList.appendChild(card);
+  });
+}
+
+function cancelFriendRequest(request) {
+  db.collection("friendRequests")
+    .doc(request.id)
+    .delete()
+    .then(function () {
+      const user = auth.currentUser;
+      if (user) loadSocialData(user);
+    })
+    .catch(function (error) {
+      console.error("Error cancelling friend request:", error);
+      alert("Failed to cancel friend request.");
+    });
+}
+
 function createUserCard(user, currentUser, context) {
   const card = document.createElement("div");
   card.className = "user-card";
@@ -1686,6 +2140,13 @@ function createUserCard(user, currentUser, context) {
 
   details.appendChild(name);
   details.appendChild(email);
+
+  const isDevAccount =
+    (user.email || "").toLowerCase() === DEVELOPER_EMAIL.toLowerCase() ||
+    (user.username || "").toLowerCase() === DEVELOPER_USERNAME.toLowerCase();
+  if (isDevAccount) {
+    appendDevBadge(details);
+  }
 
   const status = createUserStatusIndicator(user.status || "offline");
 
@@ -1727,29 +2188,58 @@ function createUserCard(user, currentUser, context) {
           });
           actions.appendChild(removeFriendBtn);
         } else {
-          db.collection("friendRequests")
-            .where("fromUserId", "==", currentUser.uid)
-            .where("toUserId", "==", user.id)
-            .where("status", "==", "pending")
-            .get()
-            .then(function (querySnapshot) {
-              if (querySnapshot.empty) {
-                const sendRequestBtn = document.createElement("button");
-                sendRequestBtn.className = "action-btn primary";
-                sendRequestBtn.textContent = "Add Friend";
-                sendRequestBtn.addEventListener("click", function (e) {
-                  e.stopPropagation();
-                  sendFriendRequest(currentUser, user);
-                });
-                actions.appendChild(sendRequestBtn);
-              } else {
-                const pendingBtn = document.createElement("button");
-                pendingBtn.className = "action-btn secondary";
-                pendingBtn.textContent = "Pending";
-                pendingBtn.disabled = true;
-                actions.appendChild(pendingBtn);
-              }
-            });
+          Promise.all([
+            db
+              .collection("friendRequests")
+              .where("fromUserId", "==", currentUser.uid)
+              .where("toUserId", "==", user.id)
+              .where("status", "==", "pending")
+              .get(),
+            db
+              .collection("friendRequests")
+              .where("fromUserId", "==", user.id)
+              .where("toUserId", "==", currentUser.uid)
+              .where("status", "==", "pending")
+              .get(),
+          ]).then(function ([outgoingSnapshot, incomingSnapshot]) {
+            if (!incomingSnapshot.empty) {
+              const requestDoc = incomingSnapshot.docs[0];
+              const requestData = { id: requestDoc.id, ...requestDoc.data() };
+              const acceptBtn = document.createElement("button");
+              acceptBtn.className = "action-btn success";
+              acceptBtn.textContent = "Accept";
+              acceptBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                acceptFriendRequest(requestData);
+              });
+
+              const declineBtn = document.createElement("button");
+              declineBtn.className = "action-btn danger";
+              declineBtn.textContent = "Decline";
+              declineBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                declineFriendRequest(requestData);
+              });
+
+              actions.appendChild(acceptBtn);
+              actions.appendChild(declineBtn);
+            } else if (!outgoingSnapshot.empty) {
+              const pendingBtn = document.createElement("button");
+              pendingBtn.className = "action-btn secondary";
+              pendingBtn.textContent = "Pending";
+              pendingBtn.disabled = true;
+              actions.appendChild(pendingBtn);
+            } else {
+              const sendRequestBtn = document.createElement("button");
+              sendRequestBtn.className = "action-btn primary";
+              sendRequestBtn.textContent = "Add Friend";
+              sendRequestBtn.addEventListener("click", function (e) {
+                e.stopPropagation();
+                sendFriendRequest(currentUser, user);
+              });
+              actions.appendChild(sendRequestBtn);
+            }
+          });
         }
       });
   } else if (context === "friend") {
@@ -1921,6 +2411,10 @@ function acceptFriendRequest(request) {
 
       return batch.commit();
     })
+    .then(function () {
+      const user = auth.currentUser;
+      if (user) loadSocialData(user);
+    })
     .catch(function (error) {
       console.error("Error accepting friend request:", error);
       alert("Failed to accept friend request.");
@@ -1930,8 +2424,10 @@ function acceptFriendRequest(request) {
 function declineFriendRequest(request) {
   db.collection("friendRequests")
     .doc(request.id)
-    .update({
-      status: "declined",
+    .delete()
+    .then(function () {
+      const user = auth.currentUser;
+      if (user) loadSocialData(user);
     })
     .catch(function (error) {
       console.error("Error declining friend request:", error);
@@ -2267,12 +2763,24 @@ function loadMessages() {
           return;
         }
 
+        const conversationId = [user.uid, currentChatUserId].sort().join("_");
+        let visibleCount = 0;
         messagesContainer.innerHTML = "";
         snapshot.forEach(function (doc) {
+          if (isMessageHidden(conversationId, doc.id)) {
+            return;
+          }
           const message = doc.data();
           const messageBubble = createMessageBubble(message, user.uid, doc.id);
           messagesContainer.appendChild(messageBubble);
+          visibleCount += 1;
         });
+
+        if (visibleCount === 0) {
+          if (messagesContainer)
+            messagesContainer.innerHTML =
+              "<p>No messages yet. Start the conversation!</p>";
+        }
 
         if (!chatInitialLoad) {
           snapshot.docChanges().forEach(function (change) {
@@ -2335,40 +2843,45 @@ function handleDeleteMessage(messageId) {
   if (!user || !currentChatUserId || !messageId) return;
 
   const conversationId = [user.uid, currentChatUserId].sort().join("_");
-  db.collection("conversations")
-    .doc(conversationId)
-    .collection("messages")
-    .doc(messageId)
-    .delete()
-    .catch(function (error) {
-      console.error("Failed to delete message:", error);
-    });
+  hideMessageLocally(conversationId, messageId);
+
+  const bubble = document.querySelector(`[data-message-id="${messageId}"]`);
+  if (bubble) {
+    const row = bubble.closest(".message-row");
+    if (row) {
+      row.remove();
+      return;
+    }
+    bubble.remove();
+  }
 }
 
 function createMessageBubble(message, currentUserId, messageId) {
+  const row = document.createElement("div");
+  const isSent = message.senderId === currentUserId;
+  row.className = "message-row " + (isSent ? "sent" : "received");
+
   const bubble = document.createElement("div");
   bubble.className =
-    "message-bubble " +
-    (message.senderId === currentUserId ? "sent" : "received");
+    "message-bubble " + (isSent ? "sent" : "received");
   bubble.dataset.messageId = messageId || "";
   bubble.tabIndex = 0;
   bubble.addEventListener("click", function () {
     closeAllMessageMenus();
   });
 
+  const menuWrapper = document.createElement("div");
+  menuWrapper.className = "message-menu-wrapper";
+
   const menuButton = document.createElement("button");
   menuButton.type = "button";
   menuButton.className = "message-menu-button";
   menuButton.setAttribute("aria-label", "Open message actions");
-  menuButton.innerHTML = '<span class="material-icons">more_horiz</span>';
-  menuButton.addEventListener("click", function (event) {
-    event.stopPropagation();
-    closeAllMessageMenus();
-    menu.classList.toggle("active");
-  });
+  menuButton.innerHTML =
+    '<span class="material-icons" style="display: inline-block; transform: translateY(3px) translateX(-1px);">more_horiz</span>';
 
   const menu = document.createElement("div");
-  menu.className = "message-menu";
+  menu.className = "message-menu " + (isSent ? "align-left" : "align-right");
 
   const forwardAction = document.createElement("button");
   forwardAction.type = "button";
@@ -2392,8 +2905,14 @@ function createMessageBubble(message, currentUserId, messageId) {
 
   menu.appendChild(forwardAction);
   menu.appendChild(deleteAction);
-  bubble.appendChild(menuButton);
-  bubble.appendChild(menu);
+  menuWrapper.appendChild(menuButton);
+  menuWrapper.appendChild(menu);
+
+  menuButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    closeAllMessageMenus();
+    menu.classList.toggle("active");
+  });
 
   if (message.text) {
     const text = document.createElement("div");
@@ -2409,7 +2928,11 @@ function createMessageBubble(message, currentUserId, messageId) {
     image.alt = message.imageName || "Attached image";
     image.addEventListener("click", function () {
       const win = window.open("", "_blank");
-      win.document.write('<body style="margin:0;padding:0;background:#000;"><img src="' + message.imageUrl + '" style="width:100vw;height:100vh;object-fit:cover;display:block;"></body>');
+      win.document.write(
+        '<body style="margin:0;padding:0;background:#000;"><img src="' +
+          message.imageUrl +
+          '" style="width:100vw;height:100vh;object-fit:cover;display:block;"></body>',
+      );
       win.document.close();
     });
     bubble.appendChild(image);
@@ -2428,7 +2951,15 @@ function createMessageBubble(message, currentUserId, messageId) {
 
   bubble.appendChild(meta);
 
-  return bubble;
+  const bubbleWrapper = document.createElement("div");
+  bubbleWrapper.className = "message-bubble-wrapper";
+  if (isSent) bubbleWrapper.classList.add("sent");
+  bubbleWrapper.appendChild(bubble);
+  bubbleWrapper.appendChild(menuWrapper);
+
+  row.appendChild(bubbleWrapper);
+
+  return row;
 }
 
 function sendMessage() {
@@ -2521,6 +3052,13 @@ function openProfileDialog(user, context) {
 
   if (profileEmail) {
     profileEmail.textContent = user.email;
+  }
+
+  const isDevAccount =
+    (user.email || "").toLowerCase() === DEVELOPER_EMAIL.toLowerCase() ||
+    (user.username || "").toLowerCase() === DEVELOPER_USERNAME.toLowerCase();
+  if (profileDevBadge) {
+    profileDevBadge.classList.toggle("hidden", !isDevAccount);
   }
 
   const status = user.status || "offline";

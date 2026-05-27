@@ -1239,6 +1239,22 @@ body.settings-open .settings-btn {
     color: #bdbdbd;
 }
 
+.dev-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #536dfe;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
 .status-dot {
     width: 8px;
     height: 8px;
@@ -1512,6 +1528,34 @@ body.settings-open .settings-btn {
     display: none;
 }
 
+.message-row {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.message-row.sent {
+    justify-content: flex-end;
+}
+
+.message-bubble-wrapper {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 8px;
+    position: relative;
+}
+
+.message-bubble-wrapper.sent {
+    flex-direction: row-reverse;
+}
+
+.message-menu-wrapper {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
 .message-bubble {
     position: relative;
     max-width: 70%;
@@ -1521,9 +1565,6 @@ body.settings-open .settings-btn {
 }
 
 .message-menu-button {
-    position: absolute;
-    top: 8px;
-    right: 8px;
     width: 32px;
     height: 32px;
     border: none;
@@ -1543,8 +1584,7 @@ body.settings-open .settings-btn {
 
 .message-menu {
     position: absolute;
-    top: 44px;
-    right: 8px;
+    top: 36px;
     min-width: 140px;
     background: rgba(12, 17, 27, 0.98);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1557,10 +1597,53 @@ body.settings-open .settings-btn {
     z-index: 10;
 }
 
+.message-menu.align-right {
+    left: 0;
+}
+
+.message-menu.align-left {
+    right: 0;
+}
+
+.message-menu.align-right::before,
+.message-menu.align-left::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+}
+
+.message-menu.align-right::before {
+    left: -12px;
+    border-right-color: rgba(12, 17, 27, 0.98);
+}
+
+.message-menu.align-left::before {
+    right: -12px;
+    border-left-color: rgba(12, 17, 27, 0.98);
+}
+
 .message-menu.active {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+.message-menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #f4f7ff;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.92rem;
+    cursor: pointer;
+}
+
+.message-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .message-menu-item {
