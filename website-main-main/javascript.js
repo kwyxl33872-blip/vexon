@@ -848,6 +848,7 @@ function saveAntiUrl(url) {
 }
 
 function formatKeyEvent(e) {
+  if (!e || !e.key) return "";  // add this line
   const parts = [];
   if (e.ctrlKey) parts.push("Ctrl");
   if (e.altKey) parts.push("Alt");
@@ -2269,7 +2270,7 @@ function loadMessages() {
         messagesContainer.innerHTML = "";
         snapshot.forEach(function (doc) {
           const message = doc.data();
-          const messageBubble = createMessageBubble(message, user.uid);
+          const messageBubble = createMessageBubble(message, user.uid, doc.id);
           messagesContainer.appendChild(messageBubble);
         });
 
@@ -2304,11 +2305,95 @@ function loadMessages() {
     );
 }
 
-function createMessageBubble(message, currentUserId) {
+function closeAllMessageMenus() {
+  document.querySelectorAll(".message-menu.active").forEach(function (menu) {
+    menu.classList.remove("active");
+  });
+}
+
+document.addEventListener("click", function (event) {
+  if (
+    !event.target.closest(".message-menu") &&
+    !event.target.closest(".message-menu-button")
+  ) {
+    closeAllMessageMenus();
+  }
+});
+
+function handleForwardMessage(message) {
+  if (!messageInput) return;
+  const parts = [];
+  if (message.text) parts.push(message.text);
+  if (message.imageUrl && !message.text) parts.push("[Forwarded image]");
+  if (message.imageUrl && message.text) parts.push("[Image attached]");
+  messageInput.value = "Fwd: " + parts.join(" ");
+  messageInput.focus();
+}
+
+function handleDeleteMessage(messageId) {
+  const user = auth.currentUser;
+  if (!user || !currentChatUserId || !messageId) return;
+
+  const conversationId = [user.uid, currentChatUserId].sort().join("_");
+  db.collection("conversations")
+    .doc(conversationId)
+    .collection("messages")
+    .doc(messageId)
+    .delete()
+    .catch(function (error) {
+      console.error("Failed to delete message:", error);
+    });
+}
+
+function createMessageBubble(message, currentUserId, messageId) {
   const bubble = document.createElement("div");
   bubble.className =
     "message-bubble " +
     (message.senderId === currentUserId ? "sent" : "received");
+  bubble.dataset.messageId = messageId || "";
+  bubble.tabIndex = 0;
+  bubble.addEventListener("click", function () {
+    closeAllMessageMenus();
+  });
+
+  const menuButton = document.createElement("button");
+  menuButton.type = "button";
+  menuButton.className = "message-menu-button";
+  menuButton.setAttribute("aria-label", "Open message actions");
+  menuButton.innerHTML = '<span class="material-icons">more_horiz</span>';
+  menuButton.addEventListener("click", function (event) {
+    event.stopPropagation();
+    closeAllMessageMenus();
+    menu.classList.toggle("active");
+  });
+
+  const menu = document.createElement("div");
+  menu.className = "message-menu";
+
+  const forwardAction = document.createElement("button");
+  forwardAction.type = "button";
+  forwardAction.className = "message-menu-item";
+  forwardAction.textContent = "Forward";
+  forwardAction.addEventListener("click", function (event) {
+    event.stopPropagation();
+    handleForwardMessage(message);
+    menu.classList.remove("active");
+  });
+
+  const deleteAction = document.createElement("button");
+  deleteAction.type = "button";
+  deleteAction.className = "message-menu-item";
+  deleteAction.textContent = "Delete";
+  deleteAction.addEventListener("click", function (event) {
+    event.stopPropagation();
+    handleDeleteMessage(messageId);
+    menu.classList.remove("active");
+  });
+
+  menu.appendChild(forwardAction);
+  menu.appendChild(deleteAction);
+  bubble.appendChild(menuButton);
+  bubble.appendChild(menu);
 
   if (message.text) {
     const text = document.createElement("div");

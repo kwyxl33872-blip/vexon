@@ -1513,10 +1513,69 @@ body.settings-open .settings-btn {
 }
 
 .message-bubble {
+    position: relative;
     max-width: 70%;
-    padding: 10px 14px;
+    padding: 14px 14px 10px;
     border-radius: 16px;
     word-wrap: break-word;
+}
+
+.message-menu-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8f9fb;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.message-menu-button:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
+.message-menu {
+    position: absolute;
+    top: 44px;
+    right: 8px;
+    min-width: 140px;
+    background: rgba(12, 17, 27, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+    z-index: 10;
+}
+
+.message-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.message-menu-item {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #f4f7ff;
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 0.92rem;
+    cursor: pointer;
+}
+
+.message-menu-item:hover {
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .message-bubble.sent {
